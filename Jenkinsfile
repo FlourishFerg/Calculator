@@ -13,5 +13,11 @@ pipeline {
                 bat 'mvn test'
             }
         }
+
+        stage('Code Coverage') {
+            steps {
+                bat 'mvn jacoco:report'
+            }
+        }
     }
 }
