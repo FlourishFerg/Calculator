@@ -19,7 +19,7 @@ pipeline {
                 // Generate JaCoCo coverage report
                 bat 'mvn jacoco:report'
 
-                // Optionally enforce coverage threshold (uncomment if needed)
+                // Optionally enforce coverage threshold
                 // bat 'mvn jacoco:check'
 
                 // Publish HTML report to Jenkins UI
@@ -27,6 +27,20 @@ pipeline {
                     reportDir: 'target/site/jacoco',
                     reportFiles: 'index.html',
                     reportName: 'JaCoCo Coverage Report'
+                ])
+            }
+        }
+
+        stage('Static Code Analysis') {
+            steps {
+                // Run Checkstyle analysis
+                bat 'mvn checkstyle:check'
+
+                // Publish Checkstyle HTML report
+                publishHTML(target: [
+                    reportDir: 'target/site',
+                    reportFiles: 'checkstyle.html',
+                    reportName: 'Checkstyle Report'
                 ])
             }
         }
