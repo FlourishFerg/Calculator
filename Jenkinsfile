@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Compile') {
             steps {
-                bat 'mvn compile'
+                bat 'mvn clean compile'
             }
         }
 
@@ -16,13 +16,7 @@ pipeline {
 
         stage('Code Coverage') {
             steps {
-                // Generate JaCoCo coverage report
                 bat 'mvn jacoco:report'
-
-                // Optionally enforce coverage threshold
-                // bat 'mvn jacoco:check'
-
-                // Publish HTML report to Jenkins UI
                 publishHTML(target: [
                     reportDir: 'target/site/jacoco',
                     reportFiles: 'index.html',
@@ -33,10 +27,8 @@ pipeline {
 
         stage('Static Code Analysis') {
             steps {
-                // Run Checkstyle analysis
                 bat 'mvn checkstyle:check'
-
-                // Publish Checkstyle HTML report
+                bat 'mvn site' // ensures checkstyle.html is generated
                 publishHTML(target: [
                     reportDir: 'target/site',
                     reportFiles: 'checkstyle.html',
